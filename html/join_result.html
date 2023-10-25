@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 페이지</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="gray"> 
+    <div id="skip">
+        <a href="#header">헤더 영역 바로가기</a>
+        <a href="#main">콘텐츠 영역 바로가기</a>
+        <a href="#footer">푸터 영역 바로가기</a>
+    </div>
+
+    <header id="header" role="banner">
+        <div class="header__inner container">
+            <div class="left">
+                <a href="../index.html">
+                    <span class="blind">메인으로</span>
+                </a>
+            </div>
+            <div class="logo">
+                <a href="main.html">Developer Blog</a>
+            </div>
+            <div class="right">
+                <ul>
+                    <li><a href="join.html">회원가입</a></li>
+                </ul>
+            </div>
+        </div>
+        <nav class="nav__inner">
+            <ul>
+                <li><a href="join.html">회원가입</a></li>
+                <li><a href="login.html">로그인</a></li>
+                <li><a href="board.html">게시판</a></li>
+                <li><a href="blog.html">블로그</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- //header -->
+
+    <main id="main" role="main">
+        <div class="intro__inner bmStyle container">
+            <div class="intro__img">
+                <img srcset="../assets/img/intro01.jpg 1x, ../assets/img/intro01@2x.jpg 2x, ../assets/img/intro01@3x.jpg 3x"  alt="소개 이미지">
+            </div>
+            <div class="intro__text">
+                회원가입을 해주시면 다양한 정보를 자유롭게 볼 수 있습니다. 
+            </div>
+        </div>
+        <section class="join__inner container">
+            <h2>
+                <span class="pumping" data-text="추카추카"></span>
+            </h2>
+            <div class="join__index">
+                <ul>
+                    <li>1</li>
+                    <li class="active">2</li>
+                    <li>3</li>
+                </ul>
+            </div>
+            
+        </section>
+    </main>
+    <!-- //main -->
+
+    <footer id="footer" role="contentinfo">
+        <div class="footer__inner container btStyle">
+            <div>Copyright 2023 webstoryboy</div>
+            <div>blog by webs</div>
+        </div>
+    </footer>
+    <!-- //foter -->
+
+    <script>
+        const colors = ['#FC4F4F', '#FFBC80', '#FF9F45', '#F76E11']
+        //const shapes = ['square', 'circle', 'triangle', 'heart']
+        const shapes = ['square']
+
+        const randomIntBetween = (min, max) => {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        class Particle {
+            constructor({ x, y, rotation, shape, color, size, duration, parent }) {
+                this.x = x
+                this.y = y
+                this.parent = parent
+                this.rotation = rotation
+                this.shape = shape
+                this.color = color
+                this.size = size
+                this.duration = duration
+                this.children = document.createElement('div')
+            }
+
+            draw() {
+                this.children.style.setProperty('--x', this.x + 'px')
+                this.children.style.setProperty('--y', this.y + 'px')
+                this.children.style.setProperty('--r', this.rotation + 'deg')
+                this.children.style.setProperty('--c', this.color)
+                this.children.style.setProperty('--size', this.size + 'px')
+                this.children.style.setProperty('--d', this.duration + 'ms')
+                this.children.className = `shape ${this.shape}`
+                this.parent.append(this.children)
+            }
+
+            animate() {
+                this.draw()
+
+                const timer = setTimeout(() => {
+                this.parent.removeChild(this.children)
+                    clearTimeout(timer)
+                }, this.duration)
+                }
+            }
+
+            function animateParticles({ total }) {
+                for (let i = 0; i < total; i++) {
+                    const particle = new Particle({
+                        x: randomIntBetween(-200, 200),
+                        y: randomIntBetween(-100, -300),
+                        rotation: randomIntBetween(-360 * 5, 360 * 5),
+                        shape: shapes[randomIntBetween(0, shapes.length - 1)],
+                        color: colors[randomIntBetween(0, colors.length - 1)],
+                        size: randomIntBetween(4, 7),
+                        duration: randomIntBetween(400, 1000),
+                        parent
+                    })
+                    particle.animate()
+                }
+            }
+
+            let intervalTimer = setInterval(() => {
+                animateParticles({ total: 40 })
+            }, 500)
+
+            const parent = document.querySelector('.join__inner h2 span')
+            parent.addEventListener("touchstart", () => {}, false);
+            parent.addEventListener('click', e => {
+            if (intervalTimer) {
+                clearInterval(intervalTimer)
+                intervalTimer = null
+                parent.classList.remove('pumping')
+            }
+            animateParticles({ total: 40 })
+        })
+    </script>
+</body>
+</html>
